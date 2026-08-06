@@ -1,29 +1,41 @@
-import "./Card.css"
-import type { MouseEvent } from 'react'
+import { Link } from "react-router-dom";
+import "./Card.css";
 import type { CompanySearch } from "../../company";
-import AddPortfolio from '../Portfolio/AddPortfolio'
+import AddPortfolio from "../Portfolio/AddPortfolio/AddPortfolio";
 
 interface Props {
-    searchResult: CompanySearch;
-    onPortfolioCreate: (e: MouseEvent<HTMLButtonElement>) => void;
+  id: string;
+  searchResult: CompanySearch;
+  onPortfolioCreate: (symbol: string) => void;
 }
 
-const Card = ({ searchResult, onPortfolioCreate }: Props) => {
-    return (
-        <div className="card">
-            <div className="details">
-                <h2>{searchResult.name}({searchResult.symbol})</h2>
-                <p>{searchResult.currency}</p>
-            </div>
-            <p className="info">
-                {searchResult.exchange} - {searchResult.exchangeFullName}
-            </p>
-            <AddPortfolio
-                symbol={searchResult.symbol}
-                onPortfolioCreate={onPortfolioCreate}
-            />
-        </div>
-    )
-}
+const Card = ({
+  id,
+  searchResult,
+  onPortfolioCreate,
+}: Props) => {
+  return (
+    <div
+      className="flex flex-col items-center justify-between w-full p-6 bg-slate-100 rounded-lg md:flex-row"
+      key={id}
+      id={id}
+    >
+      <Link
+        to={`/company/${searchResult.symbol}`}
+        className="font-bold text-center text-veryDarkViolet md:text-left"
+      >
+        {searchResult.name} ({searchResult.symbol})
+      </Link>
+      <p className="text-veryDarkBlue">{searchResult.currency}</p>
+      <p className="font-bold text-veryDarkBlue">
+        {searchResult.exchangeShortName} - {searchResult.stockExchange}
+      </p>
+      <AddPortfolio
+        onPortfolioCreate={onPortfolioCreate}
+        symbol={searchResult.symbol}
+      />
+    </div>
+  );
+};
 
-export default Card
+export default Card;

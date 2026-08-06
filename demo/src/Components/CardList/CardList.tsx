@@ -1,28 +1,35 @@
-import Card from '../Card/Card'
-import type { MouseEvent } from 'react'
-import type { CompanySearch } from '../../company'
+import Card from "../Card/Card";
+import type { CompanySearch } from "../../company";
 
 interface Props {
-    searchResult: CompanySearch[]
-    onPortfolioCreate: (e: MouseEvent<HTMLButtonElement>) => void
+  searchResults: CompanySearch[];
+  onPortfolioCreate: (symbol: string) => void;
 }
 
-const CardList = ({ searchResult, onPortfolioCreate }: Props) => {
-    return (
-        <div>
-            {searchResult.length > 0 ? (
-                searchResult.map((result) => (
-                    <Card
-                        key={`${result.symbol}-${result.exchange}`}
-                        searchResult={result}
-                        onPortfolioCreate={onPortfolioCreate}
-                    />
-                ))
-            ) : (
-                <h1>No results found</h1>
-            )}
-        </div>
-    )
-}
+const CardList = ({
+  searchResults,
+  onPortfolioCreate,
+}: Props) => {
+  return (
+    <div>
+      {searchResults.length > 0 ? (
+        searchResults.map((result) => {
+          return (
+            <Card
+              id={result.symbol}
+              key={result.symbol}
+              searchResult={result}
+              onPortfolioCreate={onPortfolioCreate}
+            />
+          );
+        })
+      ) : (
+        <p className="mb-3 mt-3 text-xl font-semibold text-center md:text-xl">
+          No results!
+        </p>
+      )}
+    </div>
+  );
+};
 
-export default CardList
+export default CardList;
