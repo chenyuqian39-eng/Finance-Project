@@ -9,19 +9,6 @@ interface FmpSearchResult {
   exchangeFullName: string;
 }
 
-export interface CompanyProfileSummary {
-  symbol: string;
-  companyName: string;
-  price: number;
-  currency: string;
-  exchange: string;
-  exchangeFullName: string;
-  industry: string;
-  website: string;
-  description: string;
-  image: string;
-}
-
 export const searchCompanies = async (query: string) => {
   try {
     const response = await axios.get<FmpSearchResult[]>(
@@ -48,18 +35,4 @@ export const searchCompanies = async (query: string) => {
       return "An unexpected error has occurred.";
     }
   }
-};
-
-export const getCompanyProfile = async (
-  ticker: string,
-  signal?: AbortSignal
-): Promise<CompanyProfileSummary | null> => {
-  const response = await axios.get<CompanyProfileSummary[]>(
-    `https://financialmodelingprep.com/stable/profile?symbol=${encodeURIComponent(
-      ticker
-    )}&apikey=${process.env.REACT_APP_API_KEY}`,
-    { signal }
-  );
-
-  return response.data[0] ?? null;
 };
