@@ -5,6 +5,18 @@ import {
   getCompanyProfile,
   type CompanyProfileSummary,
 } from "../../api";
+import CompanyDashboard from "../../Components/CompanyDashboard/CompanyDashboard";
+import Sidebar from "../../Components/Sidebar/Sidebar";
+import Tile from "../../Components/Tile/Tile";
+
+const formatMoney = (value: number | null, currency: string) =>
+  value === null
+    ? "N/A"
+    : new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency,
+        maximumFractionDigits: 2,
+      }).format(value);
 
 const CompanyPage = () => {
   const { ticker } = useParams<{ ticker: string }>();
@@ -61,8 +73,17 @@ const CompanyPage = () => {
   }
 
   return (
-    <main className="company-profile-container container mx-auto p-6">
-      <h1 className="text-3xl font-bold">{company.companyName}</h1>
+    <main className="company-profile-container relative flex w-full overflow-x-hidden">
+      <Sidebar />
+      <CompanyDashboard company={company}>
+        <Tile title="Company Name" subTitle={company.companyName} />
+        <Tile
+          title="Price"
+          subTitle={formatMoney(company.price, company.currency)}
+        />
+        <Tile title="DCF" subTitle={formatMoney(company.dcf, company.currency)} />
+        <Tile title="Sector" subTitle={company.sector || "N/A"} />
+      </CompanyDashboard>
     </main>
   );
 };
